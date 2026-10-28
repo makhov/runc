@@ -925,6 +925,9 @@ func (c *Container) criuSwrk(process *Process, req *criurpc.CriuReq, opts *CriuO
 		logrus.Debugf("Using CRIU %d", c.criuVersion)
 	}
 	cmd := exec.Command("criu", "swrk", "3")
+	if opts != nil && len(opts.Command) > 0 {
+		cmd = exec.Command(opts.Command[0], append(opts.Command[1:len(opts.Command):len(opts.Command)], "swrk", "3")...)
+	}
 	if process != nil {
 		cmd.Stdin = process.Stdin
 		cmd.Stdout = process.Stdout

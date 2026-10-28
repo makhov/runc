@@ -31,6 +31,12 @@ type CriuOpts struct {
 	LsmProfile              string             // LSM profile used to restore the container
 	LsmMountContext         string             // LSM mount context value to use during restore
 
+	// Command, if set, runs criu instead of "criu" from PATH: Command[0]
+	// with Command[1:] before criu's own arguments. It lets an embedding
+	// runtime set up the process that criu runs in (and the tasks it
+	// restores inherit), which Go cannot do between fork and exec.
+	Command []string
+
 	// ManageCgroupsMode tells how criu should manage cgroups during
 	// checkpoint or restore. Possible values are: "soft", "full",
 	// "strict", "ignore", or "" (empty string) for criu default.
