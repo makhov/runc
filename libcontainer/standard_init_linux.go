@@ -174,6 +174,12 @@ func (l *linuxStandardInit) Init() error {
 		return err
 	}
 
+	if InitHook != nil {
+		if err := InitHook(l.config.Config, []*os.File{l.fifoFile}); err != nil {
+			return fmt.Errorf("init hook: %w", err)
+		}
+	}
+
 	// Tell our parent that we're ready to exec. This must be done before the
 	// Seccomp rules have been applied, because we need to be able to read and
 	// write to a socket.
