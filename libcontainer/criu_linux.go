@@ -1151,6 +1151,12 @@ func (c *Container) criuNotifications(resp *criurpc.CriuResp, process *Process, 
 	case "post-restore":
 		pid := notify.GetPid()
 
+		if opts.PostRestore != nil {
+			if err := opts.PostRestore(int(pid)); err != nil {
+				return err
+			}
+		}
+
 		p, err := os.FindProcess(int(pid))
 		if err != nil {
 			return err
