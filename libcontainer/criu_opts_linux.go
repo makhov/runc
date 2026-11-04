@@ -37,6 +37,13 @@ type CriuOpts struct {
 	// restores inherit), which Go cannot do between fork and exec.
 	Command []string
 
+	// PostRestore, if set, is called on restore once criu has rebuilt the
+	// container's mounts and before it resumes the tasks or their devices
+	// (criu's post-restore action), with the restored init's pid. It lets
+	// an embedding runtime adjust the restored container, for example
+	// give it the device nodes of the hardware it now runs on.
+	PostRestore func(pid int) error
+
 	// ManageCgroupsMode tells how criu should manage cgroups during
 	// checkpoint or restore. Possible values are: "soft", "full",
 	// "strict", "ignore", or "" (empty string) for criu default.
