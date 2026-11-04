@@ -6,7 +6,7 @@ import (
 	"github.com/opencontainers/runc/libcontainer/configs"
 )
 
-// InitHook, if set, runs in a container's init process once its root
+// InitHook is called, if set, in a container's init process once its root
 // filesystem is final, and before the init drops capabilities and applies
 // seccomp. It runs on the thread that later execs the container's
 // process. keep are host files the init still opens through /proc after
