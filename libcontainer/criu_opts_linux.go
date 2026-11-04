@@ -44,6 +44,15 @@ type CriuOpts struct {
 	// give it the device nodes of the hardware it now runs on.
 	PostRestore func(pid int) error
 
+	// PostDump, if set, is called on checkpoint once criu has dumped the
+	// container and while its tasks are still stopped (criu's post-dump
+	// action), before they are resumed or killed. It lets an embedding
+	// runtime capture state that has to match the dump, such as the
+	// container's writable layer: criu thaws a frozen container to seize
+	// it in some cases (a CUDA task has to run to be locked), so the tasks
+	// may have changed files between the runtime's freeze and the dump.
+	PostDump func() error
+
 	// ManageCgroupsMode tells how criu should manage cgroups during
 	// checkpoint or restore. Possible values are: "soft", "full",
 	// "strict", "ignore", or "" (empty string) for criu default.
